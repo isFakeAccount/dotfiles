@@ -6,7 +6,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     version = false, -- last release is way too old and doesn't work on Windows
     build = ":TSUpdate",
-    event = { "VeryLazy" },
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
@@ -107,6 +107,7 @@ return {
   -- Automatically add closing tags for HTML and JSX
   {
     "windwp/nvim-ts-autotag",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {},
   },
 }

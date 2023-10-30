@@ -1,6 +1,7 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
+        event = { "BufReadPre", "BufNewFile" },
         opts = function(_, opts)
             if type(opts.ensure_installed) == "table" then
                 vim.list_extend(opts.ensure_installed, { "ninja", "python", "rst", "toml" })
@@ -42,6 +43,7 @@ return {
     {
         "linux-cultist/venv-selector.nvim",
         cmd = "VenvSelect",
+        event = "VeryLazy",
         opts = function(_, opts)
             return vim.tbl_deep_extend("force", opts, {
                 name = {
