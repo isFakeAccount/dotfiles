@@ -15,7 +15,8 @@ return {
     opts = function()
         -- PERF: we don't need this lualine require madness 🤷
         local lualine_require = require("lualine_require")
-
+        local lazy_status = require("lazy.status")
+        
         lualine_require.require = require
         vim.o.laststatus = vim.g.lualine_laststatus
 
@@ -27,6 +28,18 @@ return {
                 },
             },
             extensions = { "neo-tree", "lazy" },
+            sections = {
+                lualine_x = {
+                    {
+                        lazy_status.updates,
+                        cond = lazy_status.has_updates,
+                        color = { fg = "#ff9e64" },
+                    },
+                    { "encoding" },
+                    { "fileformat" },
+                    { "filetype" },
+                },
+            },
         }
     end,
 
