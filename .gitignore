@@ -5,3 +5,6 @@
 .config/*
 
 !.config/git/
+
+!.config/nvim
+.config/nvim/lazy-lock.json

@@ -1,0 +1,1 @@
+require("yoshikage_kira")
