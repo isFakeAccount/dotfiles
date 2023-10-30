@@ -1,7 +1,5 @@
 [init]
 	defaultBranch = master
-[core]
-	autocrlf = true
 [user]
 	email = 65515165+isFakeAccount@users.noreply.github.com
 	name = Yoshikage Kira
