@@ -10,6 +10,7 @@ export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export HISTFILE="${XDG_STATE_HOME}"/bash/history
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 export NVM_DIR="$XDG_DATA_HOME"/nvm
 export PLATFORMIO_CORE_DIR="$XDG_DATA_HOME"/platformio
 export PYENV_ROOT="$XDG_DATA_HOME"/pyenv
