@@ -1,6 +1,8 @@
 .*
 !.gitignore
 
+!xdg_config.sh
+
 !.config/
 .config/*
 
