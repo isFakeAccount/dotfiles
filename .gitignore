@@ -1,6 +1,7 @@
-.*
+*
 !.gitignore
-
+!aliases.sh
+!program_configs.sh
 !xdg_config.sh
 
 !.config/

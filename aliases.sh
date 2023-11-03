@@ -1,4 +1,5 @@
 alias ssha='eval "$(ssh-agent -s)" && ssh-add'
+alias cx='clear -x'
 
 tmux_nvim() {
     local session_name=$(basename "$(pwd)")
