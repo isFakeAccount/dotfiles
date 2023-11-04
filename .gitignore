@@ -3,6 +3,7 @@
 !aliases.sh
 !program_configs.sh
 !xdg_config.sh
+!dotfiles_setup.py
 
 !.config/
 .config/*
