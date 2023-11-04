@@ -8,9 +8,15 @@
 .config/*
 
 !.config/git/
+!.config/git/*
 
-!.config/nvim
+!.config/nvim/
+!.config/nvim/*
 .config/nvim/lazy-lock.json
 
-!.config/tmux
+!.config/tmux/
+!.config/tmux/*
 .config/tmux/plugins
+
+!.config/npm/
+!.config/npm/*
