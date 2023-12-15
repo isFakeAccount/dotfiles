@@ -42,16 +42,14 @@ return {
     },
     {
         "linux-cultist/venv-selector.nvim",
+        dependencies = { "neovim/nvim-lspconfig", "nvim-telescope/telescope.nvim", "mfussenegger/nvim-dap-python" },
         cmd = "VenvSelect",
         event = "VeryLazy",
-        opts = function(_, opts)
-            return vim.tbl_deep_extend("force", opts, {
-                name = {
-                    "venv",
-                    ".venv",
-                },
-            })
-        end,
+        opts = {
+        	name = {"venv", ".venv"},
+        	parents = 0,
+        	dap_enabled = true,
+    	},
         keys = { { "<leader>cv", "<cmd>:VenvSelect<cr>", desc = "Select VirtualEnv" } },
     },
 }
