@@ -23,7 +23,6 @@ return {
                 "<leader>dc",
                 function()
                     require("dap").continue()
-                    vim.cmd('NvimTreeClose')
                 end,
                 desc = "Continue",
             },
@@ -111,7 +110,6 @@ return {
             vim.keymap.set('n', '<F4>', dap.step_out, { desc = 'Debug: Step Out' })
             vim.keymap.set('n', '<F5>', function()
                 dap.continue()
-                vim.cmd('NvimTreeClose')
             end, { desc = 'Debug: Start/Continue' })
 
             vim.keymap.set('n', '<F6>', function() require('dap').repl.open() end, { desc = 'REPL Open' })
@@ -124,7 +122,6 @@ return {
             -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
             vim.keymap.set('n', '<F12>', function()
                 dapui.toggle()
-                vim.cmd('NvimTreeToggle')
             end, { desc = 'Debug: See last session result.' })
 
             -- Dap UI setup
@@ -143,6 +140,17 @@ return {
                         disconnect = '⏏',
                     },
                 },
+                layouts = { {
+                    elements = { {
+                        id = "breakpoints",
+                        size = 0.75
+                    }, {
+                        id = "stacks",
+                        size = 0.25
+                    } },
+                    position = "bottom",
+                    size = 10
+                } }
             }
 
 
