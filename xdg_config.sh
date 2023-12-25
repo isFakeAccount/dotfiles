@@ -8,6 +8,7 @@ export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export HISTFILE="${XDG_STATE_HOME}"/bash/history
 export LESSHISTFILE="$XDG_STATE_HOME"/less/history
 export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
