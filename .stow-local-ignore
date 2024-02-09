@@ -21,4 +21,5 @@ _darcs
 ^/LICENSE.*
 ^/COPYING
 
-unused_configs/
+unused_configs
+bash_configs

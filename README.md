@@ -4,9 +4,9 @@
 Add to `.bashrc`
 
 ```sh
-export DOTFILE_DIR='<dotfiles-repo-path>'
-source "$DOTFILE_DIR/xdg_config.sh"
-source "$DOTFILE_DIR/aliases.sh"
-source "$DOTFILE_DIR/program_configs.sh"
+export BASH_CONFIGS_DIR='<dotfiles-repo-path>/bash_configs'
+source "$BASH_CONFIGS_DIR/xdg_config.sh"
+source "$BASH_CONFIGS_DIR/aliases.sh"
+source "$BASH_CONFIGS_DIR/program_configs.sh"
 ```
 
