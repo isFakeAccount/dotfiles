@@ -7,6 +7,7 @@ export XDG_STATE_HOME="$HOME/.local/state"
 export CARGO_HOME="$XDG_DATA_HOME"/cargo
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME"/nv
 export DOCKER_CONFIG="$XDG_CONFIG_HOME"/docker
+export DOTNET_CLI_HOME="$XDG_CACHE_HOME/dotnet"
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export HISTFILE="${XDG_STATE_HOME}"/bash/history
