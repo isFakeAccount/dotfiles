@@ -1,23 +1,21 @@
 *
 !.gitignore
+!.stow-local-ignore
 !aliases.sh
 !program_configs.sh
 !xdg_config.sh
 !dotfiles_setup.py
 
 !.config/
-.config/*
 
 !.config/git/
-!.config/git/*
-
-!.config/nvim/
-!.config/nvim/*
-.config/nvim/lazy-lock.json
 
 !.config/tmux/
-!.config/tmux/*
 .config/tmux/plugins
 
 !.config/npm/
-!.config/npm/*
+
+!unused_configs/
+!unused_configs/nvim/
+!unused_configs/nvim/**
+unused_configs/nvim/lazy-lock.json
