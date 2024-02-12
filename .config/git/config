@@ -1,7 +1,0 @@
-[init]
-	defaultBranch = master
-[user]
-	email = 65515165+isFakeAccount@users.noreply.github.com
-	name = Yoshikage Kira
-[commit]
-	gpgSign = true

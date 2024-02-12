@@ -9,7 +9,7 @@
 .config/*
 
 !.config/git/
-!.config/git/*
+!.config/git/.gitkeep
 
 !.config/tmux/
 !.config/tmux/*
