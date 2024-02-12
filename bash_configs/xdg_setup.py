@@ -28,6 +28,7 @@ def create_global_gitconfig():
                 "path",
                 f"{ifinclude_path}/.gitconfig",
             )
+    print("Created Git config")
 
 
 def create_xdg_structure(xdg_paths: list[XDGPath]):
