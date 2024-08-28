@@ -1,6 +1,6 @@
 [Context]
-filesystems=xdg-data/chezmoi/.git;home/.ssh;xdg-data/chezmoi;!home
+filesystems=xdg-data/gnupg;xdg-data/chezmoi;home/.ssh;xdg-data/chezmoi/.git;!home
 persistent=.gitkraken
 
 [Environment]
-GNUPGHOME=xdg-data/gnupg
+GNUPGHOME=~/.local/share/gnupg
