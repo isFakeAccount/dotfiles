@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Copy the current contents of .bashrc to a temporary file
+tmpfile=$(mktemp)
+trap 'rm -f ${tmpfile}' EXIT
+cat >"${tmpfile}"
+
+# Write the current contents to stdout
+cat "${tmpfile}"
+
+# Define the lines to be added
+lines_to_add=(
+    'source "$HOME/.config/bash/xdg_config.sh"'
+    'source "$XDG_CONFIG_HOME/bash/aliases.sh"'
+    'source "$XDG_CONFIG_HOME/bash/program_configs.sh"'
+    'source "$XDG_CONFIG_HOME/bash/functions.sh"'
+)
+
+# Ensure each line is present, adding it if missing
+for line in "${lines_to_add[@]}"; do
+    if ! grep -Fxq "$line" "${tmpfile}"; then
+        echo "$line"
+    fi
+done
