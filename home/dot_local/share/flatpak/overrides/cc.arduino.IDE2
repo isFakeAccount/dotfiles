@@ -1,0 +1,3 @@
+[Context]
+filesystems=!home
+persistent=Arduino;.arduinoIDE;.arduino15

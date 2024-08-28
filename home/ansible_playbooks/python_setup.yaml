@@ -1,0 +1,72 @@
+---
+- name: Python Setup
+  hosts: localhost
+  become: true
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Get my user
+      ansible.builtin.set_fact:
+        remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
+
+    - name: Install python build dependencies
+      ansible.builtin.package:
+        name:
+          - build-essential
+          - gdb
+          - lcov
+          - libbz2-dev
+          - libffi-dev
+          - libgdbm-compat-dev
+          - libgdbm-dev
+          - liblzma-dev
+          - libmpdec-dev
+          - libncurses5-dev
+          - libreadline6-dev
+          - libsqlite3-dev
+          - libssl-dev
+          - lzma
+          - lzma-dev
+          - pkg-config
+          - tk-dev
+          - uuid-dev
+          - zlib1g-dev
+        state: present
+      become: true
+
+    - name: Install pyenv
+      ansible.builtin.shell: |
+        curl https://pyenv.run | bash
+      args:
+        executable: /bin/bash
+      become: false
+      ignore_errors: yes
+
+    - name: Install pipx
+      ansible.builtin.package:
+        name:
+          - pipx
+        state: present
+      become: true
+
+    - name: Install poetry via pipx
+      community.general.pipx:
+        name: poetry
+        executable: "pipx"
+        state: present
+      become: false
+
+    - name: Install tldr via pipx
+      community.general.pipx:
+        name: tldr
+        executable: "pipx"
+        state: present
+      become: false
+
+    - name: Install uv via pipx
+      community.general.pipx:
+        name: uv
+        executable: "pipx"
+        state: present
+      become: false

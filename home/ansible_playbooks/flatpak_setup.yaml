@@ -1,0 +1,31 @@
+---
+- name: Flatpak Apps
+  hosts: localhost
+  become: false
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Install Flatpak packages
+      community.general.flatpak:
+        name:
+          - cc.arduino.IDE2
+          - com.axosoft.GitKraken
+          - com.discordapp.Discord
+          - com.github.tchx84.Flatseal
+          - com.google.Chrome
+          - com.mattjakeman.ExtensionManager
+          - com.mongodb.Compass
+          - com.ultimaker.cura
+          - com.usebottles.bottles
+          - io.github.flattool.Warehouse
+          - io.gitlab.librewolf-community
+          - md.obsidian.Obsidian
+          - org.cryptomator.Cryptomator
+          - org.filezillaproject.Filezilla
+          - org.freecadweb.FreeCAD
+          - org.freedesktop.Piper
+          - org.kde.kleopatra
+          - org.remmina.Remmina
+        method: "user"
+        state: present

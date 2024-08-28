@@ -1,0 +1,6 @@
+[Context]
+filesystems=xdg-data/chezmoi/.git;home/.ssh;xdg-data/chezmoi;!home
+persistent=.gitkraken
+
+[Environment]
+GNUPGHOME=xdg-data/gnupg

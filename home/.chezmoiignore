@@ -1,0 +1,4 @@
+.chezmoiscripts/
+ansible_playbooks/
+python_scripts/
+requirements.txt
