@@ -7,7 +7,6 @@ main() {
 
     local chezmoi_dir="$HOME/.local/share/chezmoi"
     source "$chezmoi_dir/.venv/bin/activate"
-    source "$HOME/.bashrc"
 
     ansible-playbook "$chezmoi_dir/home/ansible_playbooks/flatpak_setup.yaml"
     ansible-playbook "$chezmoi_dir/home/ansible_playbooks/python_setup.yaml" --ask-become-pass
@@ -15,4 +14,5 @@ main() {
     ansible-playbook "$chezmoi_dir/home/ansible_playbooks/system_setup.yaml" --ask-become-pass
 }
 
+. ~/.bashrc
 main "$@"
