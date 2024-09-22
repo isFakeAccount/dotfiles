@@ -27,5 +27,6 @@
           - org.freedesktop.Piper
           - org.kde.kleopatra
           - org.remmina.Remmina
+          - ca.desrt.dconf-editor
         method: "user"
         state: present
