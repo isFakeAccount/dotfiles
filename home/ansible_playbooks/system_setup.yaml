@@ -21,3 +21,9 @@
           - syncthing
           - xdg-user-dirs
         state: present
+
+    - name: Uninstall packages
+      ansible.builtin.package:
+        name:
+          - firefox
+        state: absent
