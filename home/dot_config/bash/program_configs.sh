@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# pyenv: Python version manager
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
 # Cargo: Rust build system
 source "$XDG_DATA_HOME/cargo/env"
 

@@ -9,10 +9,10 @@ main() {
     source "$chezmoi_dir/.venv/bin/activate"
 
     ansible-playbook "$chezmoi_dir/home/ansible_playbooks/flatpak_setup.yaml"
-    ansible-playbook "$chezmoi_dir/home/ansible_playbooks/python_setup.yaml" --ask-become-pass
+    ansible-playbook "$chezmoi_dir/home/ansible_playbooks/python_setup.yaml"
     ansible-playbook "$chezmoi_dir/home/ansible_playbooks/rust_setup.yaml"
     ansible-playbook "$chezmoi_dir/home/ansible_playbooks/system_setup.yaml" --ask-become-pass
 }
 
-. ~/.bashrc
+source "$HOME/.config/bash/bashenv.sh"
 main "$@"

@@ -1,72 +1,30 @@
 ---
 - name: Python Setup
   hosts: localhost
-  become: true
   connection: local
   gather_facts: true
 
+  # Ensure uv is discoverable after installation by prepending ~/.local/bin to PATH
+  vars:
+    user_path: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+  environment:
+    PATH: "{{ user_path }}"
+
   tasks:
-    - name: Get my user
-      ansible.builtin.set_fact:
-        remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
-
-    - name: Install python build dependencies
-      ansible.builtin.package:
-        name:
-          - build-essential
-          - gdb
-          - lcov
-          - libbz2-dev
-          - libffi-dev
-          - libgdbm-compat-dev
-          - libgdbm-dev
-          - liblzma-dev
-          - libmpdec-dev
-          - libncurses5-dev
-          - libreadline6-dev
-          - libsqlite3-dev
-          - libssl-dev
-          - lzma
-          - lzma-dev
-          - pkg-config
-          - tk-dev
-          - uuid-dev
-          - zlib1g-dev
-        state: present
-      become: true
-
-    - name: Install pyenv
+    - name: Install uv
       ansible.builtin.shell: |
-        curl https://pyenv.run | bash
+        curl -LsSf https://astral.sh/uv/install.sh | sh
       args:
         executable: /bin/bash
-      become: false
-      ignore_errors: yes
 
-    - name: Install pipx
-      ansible.builtin.package:
-        name:
-          - pipx
-        state: present
-      become: true
+    - name: Install Poetry via uv
+      ansible.builtin.shell: |
+        uv tool install poetry
+      args:
+        executable: /bin/bash
 
-    - name: Install poetry via pipx
-      community.general.pipx:
-        name: poetry
-        executable: "pipx"
-        state: present
-      become: false
-
-    - name: Install tldr via pipx
-      community.general.pipx:
-        name: tldr
-        executable: "pipx"
-        state: present
-      become: false
-
-    - name: Install uv via pipx
-      community.general.pipx:
-        name: uv
-        executable: "pipx"
-        state: present
-      become: false
+    - name: Install tldr via uv
+      ansible.builtin.shell: |
+        uv tool install tldr
+      args:
+        executable: /bin/bash

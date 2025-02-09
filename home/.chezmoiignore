@@ -2,3 +2,4 @@
 ansible_playbooks/
 python_scripts/
 requirements.txt
+.local/share/flatpak/_overrides

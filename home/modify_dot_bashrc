@@ -10,10 +10,7 @@ cat "${tmpfile}"
 
 # Define the lines to be added
 lines_to_add=(
-    'source "$HOME/.config/bash/xdg_config.sh"'
-    'source "$XDG_CONFIG_HOME/bash/aliases.sh"'
-    'source "$XDG_CONFIG_HOME/bash/program_configs.sh"'
-    'source "$XDG_CONFIG_HOME/bash/functions.sh"'
+    'source "$HOME/.config/bash/bashenv.sh"'
 )
 
 # Ensure each line is present, adding it if missing
