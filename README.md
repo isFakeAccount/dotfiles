@@ -2,11 +2,7 @@
 
 Yoshikage Kira 's dotfiles, managed with [`chezmoi`](https://github.com/twpayne/chezmoi).
 
-Install them with:
+## Installation
 
-    chezmoi init isFakeAccount
-
-For PC with NVIDIA GPU, run the following command
-```bash
-ansible-playbook "$chezmoi_dir/home/ansible_playbooks/nvidia_setup.yaml"
-```
+1. Clone this repo to ~/.local/share/chezmoi
+2. Run the ./install.sh script

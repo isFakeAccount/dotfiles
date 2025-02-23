@@ -28,4 +28,4 @@ export XCURSOR_PATH="/usr/share/icons:$XDG_DATA_HOME/icons"
 export ZVM_PATH="$XDG_DATA_HOME/zvm"
 
 alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
-# nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings"
+# nvidia-settings --config="$XDG_CONFIG_HOME/nvidia/settings" this doesn't work for some reason :(

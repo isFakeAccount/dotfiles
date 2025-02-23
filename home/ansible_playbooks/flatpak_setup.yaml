@@ -1,32 +1,38 @@
 ---
 - name: Flatpak Apps
   hosts: localhost
-  become: false
   connection: local
   gather_facts: false
 
   tasks:
+    - name: Install Flatpak if not present
+      become: true
+      ansible.builtin.package:
+        name: flatpak
+        state: present
+
+    - name: Add Flathub remote at user level if not already added
+      ansible.builtin.command:
+        cmd: flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+      args:
+        creates: "{{ lookup('env', 'HOME') }}/.local/share/flatpak"
+      become: false
+
     - name: Install Flatpak packages
       community.general.flatpak:
         name:
-          - cc.arduino.IDE2
-          - com.axosoft.GitKraken
+          - ca.desrt.dconf-editor
           - com.discordapp.Discord
           - com.github.tchx84.Flatseal
           - com.google.Chrome
           - com.mattjakeman.ExtensionManager
-          - com.mongodb.Compass
-          - com.ultimaker.cura
           - com.usebottles.bottles
           - io.github.flattool.Warehouse
           - io.gitlab.librewolf-community
           - md.obsidian.Obsidian
           - org.cryptomator.Cryptomator
           - org.filezillaproject.Filezilla
-          - org.freecadweb.FreeCAD
           - org.freedesktop.Piper
-          - org.kde.kleopatra
           - org.remmina.Remmina
-          - ca.desrt.dconf-editor
         method: "user"
         state: present

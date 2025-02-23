@@ -1,0 +1,28 @@
+---
+- name: Software Development Setup
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Install packages
+      become: true
+      ansible.builtin.package:
+        name:
+          - code
+          - git
+          - neovim
+          - tmux
+        state: present
+
+    - name: Install Flatpak packages
+      community.general.flatpak:
+        name:
+          - cc.arduino.IDE2
+          - com.axosoft.GitKraken
+          - com.mongodb.Compass
+          - com.ultimaker.cura
+          - org.freecad.FreeCAD
+          - org.kde.kleopatra
+        method: "user"
+        state: present

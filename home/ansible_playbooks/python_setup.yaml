@@ -17,14 +17,14 @@
       args:
         executable: /bin/bash
 
-    - name: Install Poetry via uv
-      ansible.builtin.shell: |
-        uv tool install poetry
-      args:
-        executable: /bin/bash
-
     - name: Install tldr via uv
       ansible.builtin.shell: |
         uv tool install tldr
+      args:
+        executable: /bin/bash
+
+    - name: Install Poetry
+      ansible.builtin.shell: |
+        curl -sSL https://install.python-poetry.org | python3 -
       args:
         executable: /bin/bash

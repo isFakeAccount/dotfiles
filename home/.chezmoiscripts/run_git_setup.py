@@ -1,6 +1,10 @@
-from os import getenv
+#!/usr/bin/env python
 from pathlib import Path
+
 from git import GitConfigParser
+from platformdirs import user_config_path, user_data_path
+
+CHEZMOI_DIR = user_data_path("chezmoi", False)
 
 
 def create_local_git_config(account_name: str, email: str) -> Path:
@@ -11,10 +15,8 @@ def create_local_git_config(account_name: str, email: str) -> Path:
     :param email: The email for this Git account.
     :return: The path to the created .gitconfig file.
     """
-    dotfiles_dir = Path(
-        getenv("XDG_DATA_HOME", Path.home() / ".local/share"), "chezmoi"
-    )
-    git_configs_dir = dotfiles_dir / "git_configs" / account_name.replace(" ", "_")
+
+    git_configs_dir = CHEZMOI_DIR / "git_configs" / account_name.replace(" ", "_")
     git_configs_dir.mkdir(parents=True, exist_ok=True)
     gitconfig_path = git_configs_dir / ".gitconfig"
 
@@ -25,16 +27,15 @@ def create_local_git_config(account_name: str, email: str) -> Path:
     return gitconfig_path
 
 
-def create_symlinks_for_all_gitconfigs(dotfiles_dir: Path) -> list[Path]:
+def create_symlinks_for_all_gitconfigs() -> list[Path]:
     """
     Loops through all directories in git_configs and prompts the user to provide
     a file path for creating a symlink to each .gitconfig. Returns a list of paths
     where the symlinks have been created.
 
-    :param dotfiles_dir: The base directory containing all git_configs directories.
     :return: List of paths to the directories where the symlinks have been created.
     """
-    git_configs_base_dir = dotfiles_dir / "git_configs"
+    git_configs_base_dir = CHEZMOI_DIR / "git_configs"
     symlink_paths: set[Path] = set()
 
     for account_dir in git_configs_base_dir.iterdir():
@@ -68,10 +69,24 @@ def create_global_gitconfig(git_account_dirs: list[Path]) -> None:
 
     :param git_account_dirs: List of paths to directories containing .gitconfig files.
     """
-    git_config_path = Path.home() / ".config" / "git" / "config"
+    git_config_path = user_config_path("git", False) / "config"
     with GitConfigParser(git_config_path, read_only=False) as config_parser:
+        # Set default branch to 'master'
         config_parser.set_value("init", "defaultBranch", "master")
+        # Enable GPG signing for commits
         config_parser.set_value("commit", "gpgSign", "true")
+        # Enable rebase by default when pulling
+        config_parser.set_value("pull", "rebase", "true")
+        # Add a useful alias for a better log view
+        config_parser.set_value("alias", "lg", "log --oneline --graph --decorate --all")
+        # Set the default editor to Neovim
+        config_parser.set_value("core", "editor", "code")
+        # Improve diff readability with word-based coloring
+        config_parser.set_value("diff", "colorMoved", "zebra")
+        # Auto-stash before rebasing to prevent conflicts
+        config_parser.set_value("rebase", "autoStash", "true")
+        # Enable auto-completion for Git commands
+        config_parser.set_value("completion", "bash", "true")
 
         for account_dir in git_account_dirs:
             if account_dir.is_dir() and (account_dir / ".gitconfig").exists():
@@ -87,10 +102,11 @@ def create_global_gitconfig(git_account_dirs: list[Path]) -> None:
 
 
 def main() -> None:
-    dotfiles_dir = Path(
-        getenv("XDG_DATA_HOME", Path.home() / ".local/share"), "chezmoi"
+    num_accounts = int(
+        input(
+            "How many Git accounts do you want to set up? (enter 0 to skip this step): "
+        )
     )
-    num_accounts = int(input("How many Git accounts do you want to set up?: "))
 
     if num_accounts == 0:
         print("Skipping Git Account setup.")
@@ -102,7 +118,7 @@ def main() -> None:
         email = input(f"Enter the email for {name}: ").strip()
         create_local_git_config(name, email)
 
-    git_account_dirs = create_symlinks_for_all_gitconfigs(dotfiles_dir)
+    git_account_dirs = create_symlinks_for_all_gitconfigs()
     create_global_gitconfig(git_account_dirs)
 
 

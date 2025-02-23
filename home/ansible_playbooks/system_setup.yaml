@@ -6,17 +6,11 @@
   gather_facts: true
 
   tasks:
-    - name: Get my user
-      ansible.builtin.set_fact:
-        remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
-
     - name: Install packages
       ansible.builtin.package:
         name:
-          - code
+          - curl
           - exfatprogs
-          - git
-          - neovim
           - ratbagd
           - ripgrep
           - syncthing
@@ -25,6 +19,5 @@
 
     - name: Uninstall packages
       ansible.builtin.package:
-        name:
-          - firefox
+        name: firefox
         state: absent
