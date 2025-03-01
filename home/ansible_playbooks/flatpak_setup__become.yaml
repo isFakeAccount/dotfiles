@@ -1,5 +1,5 @@
 ---
-- name: Flatpak Apps
+- name: Flatpak and Flatpak Apps
   hosts: localhost
   connection: local
   gather_facts: false
@@ -12,27 +12,22 @@
         state: present
 
     - name: Add Flathub remote at user level if not already added
+      become: false
       ansible.builtin.command:
         cmd: flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
       args:
         creates: "{{ lookup('env', 'HOME') }}/.local/share/flatpak"
-      become: false
 
     - name: Install Flatpak packages
+      become: false
       community.general.flatpak:
         name:
-          - ca.desrt.dconf-editor
           - com.discordapp.Discord
           - com.github.tchx84.Flatseal
           - com.google.Chrome
-          - com.mattjakeman.ExtensionManager
           - com.usebottles.bottles
           - io.github.flattool.Warehouse
           - io.gitlab.librewolf-community
-          - md.obsidian.Obsidian
-          - org.cryptomator.Cryptomator
-          - org.filezillaproject.Filezilla
-          - org.freedesktop.Piper
           - org.remmina.Remmina
         method: "user"
         state: present

@@ -1,0 +1,15 @@
+---
+- name: Gnome Setup
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Install Flatpak packages
+      become: false
+      community.general.flatpak:
+        name:
+          - ca.desrt.dconf-editor
+          - com.mattjakeman.ExtensionManager
+        method: "user"
+        state: present

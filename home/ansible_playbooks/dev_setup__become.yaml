@@ -16,6 +16,7 @@
         state: present
 
     - name: Install Flatpak packages
+      become: false
       community.general.flatpak:
         name:
           - cc.arduino.IDE2

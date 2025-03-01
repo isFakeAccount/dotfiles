@@ -15,16 +15,6 @@ class PlaybookInfo(TypedDict):
     sudo: bool
 
 
-PLAYBOOKS: dict[str, PlaybookInfo] = {
-    "System Setup": {"filename": "system_setup.yaml", "sudo": True},
-    "Flatpak Setup": {"filename": "flatpak_setup.yaml", "sudo": True},
-    "Python Setup": {"filename": "python_setup.yaml", "sudo": False},
-    "Rust Setup": {"filename": "rust_setup.yaml", "sudo": False},
-    "Software Dev Setup": {"filename": "dev_setup.yaml", "sudo": True},
-    "NVIDIA Setup": {"filename": "nvidia_setup.yaml", "sudo": True},
-}
-
-
 def load_env() -> dict[str, str]:
     import os
 
@@ -91,6 +81,18 @@ def run_playbook(
 
 
 def main():
+    PLAYBOOKS: dict[str, PlaybookInfo] = {}
+
+    for ansible_playbook in (CHEZMOI_DIR / "home" / "ansible_playbooks").iterdir():
+        if "setup" not in ansible_playbook.name:
+            continue
+
+        playbook: PlaybookInfo = {
+            "filename": ansible_playbook.name,
+            "sudo": True if "become" in ansible_playbook.name else False,
+        }
+        PLAYBOOKS[ansible_playbook.name] = playbook
+
     selected = questionary.checkbox(
         "Select the playbooks to run:", choices=list(PLAYBOOKS.keys())
     ).ask()

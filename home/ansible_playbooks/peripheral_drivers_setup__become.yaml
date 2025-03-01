@@ -1,0 +1,21 @@
+---
+- name: Peripheral Drivers Setup
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Install packages
+      become: true
+      ansible.builtin.package:
+        name:
+          - ratbagd
+        state: present
+
+    - name: Install Flatpak packages
+      become: false
+      community.general.flatpak:
+        name:
+          - org.freedesktop.Piper
+        method: "user"
+        state: present

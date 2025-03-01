@@ -1,5 +1,5 @@
 ---
-- name: Machine Setup
+- name: System Utils Setup
   hosts: localhost
   become: true
   connection: local
@@ -13,7 +13,6 @@
           - exfatprogs
           - ratbagd
           - ripgrep
-          - syncthing
           - xdg-user-dirs
         state: present
 

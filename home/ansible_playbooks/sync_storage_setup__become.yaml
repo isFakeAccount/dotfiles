@@ -1,0 +1,24 @@
+---
+- name: Sync and Storage Setup
+  hosts: localhost
+  become: true
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Install packages
+      ansible.builtin.package:
+        name:
+          - syncthing
+          - rclone
+        state: present
+
+    - name: Install Flatpak packages
+      become: false
+      community.general.flatpak:
+        name:
+          - md.obsidian.Obsidian
+          - org.cryptomator.Cryptomator
+          - org.filezillaproject.Filezilla
+        method: "user"
+        state: present
