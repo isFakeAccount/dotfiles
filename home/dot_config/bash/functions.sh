@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
 
+warn() {
+    local message="$1"
+    local file="$2"
+    local line="$3"
+
+    printf "Warning: %s at %s:%s\n" "$message" "$file" "$line"
+}
+
 activate_venv() {
     local folder_name
     folder_name=${1:-".venv"}
 
-    source "$folder_name/bin/activate"
+    . "$folder_name/bin/activate"
 }
 
 symlink_to_localbin() {
@@ -30,10 +38,4 @@ symlink_to_localbin() {
 
     ln -s "$source_file_path" "$target_dir/$target_filename"
     echo "Symlink created: $target_dir/$target_filename -> $source_file_path"
-}
-
-function unlock-keyring() {
-    read -rsp "Password: " pass
-    export "$(echo -n "$pass" | gnome-keyring-daemon --replace --unlock)"
-    unset pass
 }

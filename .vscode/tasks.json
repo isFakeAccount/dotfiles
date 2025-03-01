@@ -1,0 +1,45 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Apply Chezmoi All",
+            "command": "chezmoi",
+            "type": "shell",
+            "args": [
+                "apply",
+                "--verbose"
+            ],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "presentation": {
+                "reveal": "always"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build"
+        },
+        {
+            "label": "Apply Chezmoi Files",
+            "command": "chezmoi",
+            "type": "shell",
+            "args": [
+                "apply",
+                "-i",
+                "files,symlinks,templates",
+                "--verbose"
+            ],
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "presentation": {
+                "reveal": "always"
+            },
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build"
+        }
+    ]
+}
