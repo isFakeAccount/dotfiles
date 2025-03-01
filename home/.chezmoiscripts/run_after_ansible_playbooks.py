@@ -83,7 +83,9 @@ def run_playbook(
 def main():
     PLAYBOOKS: dict[str, PlaybookInfo] = {}
 
-    for ansible_playbook in (CHEZMOI_DIR / "home" / "ansible_playbooks").iterdir():
+    for ansible_playbook in sorted(
+        (CHEZMOI_DIR / "home" / "ansible_playbooks").iterdir()
+    ):
         if "setup" not in ansible_playbook.name:
             continue
 
@@ -94,7 +96,9 @@ def main():
         PLAYBOOKS[ansible_playbook.name] = playbook
 
     selected = questionary.checkbox(
-        "Select the playbooks to run:", choices=list(PLAYBOOKS.keys())
+        "Select the playbooks to run:",
+        choices=list(PLAYBOOKS.keys()),
+        instruction="If flatpak is not installed on system, run the 1_flatpak_setup__become.yaml",
     ).ask()
 
     if not selected:

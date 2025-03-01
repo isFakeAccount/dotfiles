@@ -1,0 +1,20 @@
+---
+- name: Flatpak and Flatpak Apps
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Install Flatpak packages
+      become: false
+      community.general.flatpak:
+        name:
+          - com.discordapp.Discord
+          - com.github.tchx84.Flatseal
+          - com.google.Chrome
+          - com.usebottles.bottles
+          - io.github.flattool.Warehouse
+          - io.gitlab.librewolf-community
+          - org.remmina.Remmina
+        method: "user"
+        state: present
