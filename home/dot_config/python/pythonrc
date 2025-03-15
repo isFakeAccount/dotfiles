@@ -4,8 +4,11 @@
 
 
 def is_vanilla() -> bool:
-    """:return: whether running "vanilla" Python"""
+    """:return: whether running "vanilla" Python, and Python version is below 3.13"""
     import sys
+
+    if sys.version_info >= (3, 13):
+        return False
 
     return not hasattr(__builtins__, "__IPYTHON__") and "bpython" not in sys.argv[0]
 
