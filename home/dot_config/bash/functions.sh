@@ -39,3 +39,7 @@ symlink_to_localbin() {
     ln -s "$source_file_path" "$target_dir/$target_filename"
     echo "Symlink created: $target_dir/$target_filename -> $source_file_path"
 }
+
+uv_shell() {
+    uv run "$SHELL"
+}

@@ -17,3 +17,7 @@ fi
 if [ -d "$XDG_DATA_HOME/JetBrains/Toolbox/scripts" ] && ! echo "$PATH" | grep -q "$XDG_DATA_HOME/JetBrains/Toolbox/scripts"; then
     export PATH="$PATH:$XDG_DATA_HOME/JetBrains/Toolbox/scripts"
 fi
+
+# pyenv: Python version manager
+# command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"

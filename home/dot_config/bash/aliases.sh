@@ -40,3 +40,6 @@ alias path='echo -e ${PATH//:/\\n}'
 # Time related alias
 alias now_datetime='date -u +%Y-%m-%dT%H:%M:%S%Z'
 alias now_12='date +"%I:%M:%S %p"'
+
+# uv configs
+alias uvr='uv run'
