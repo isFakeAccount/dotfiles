@@ -41,5 +41,5 @@ symlink_to_localbin() {
 }
 
 uv_shell() {
-    uv run "$SHELL"
+    uv run --no-project "$SHELL"
 }
