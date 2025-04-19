@@ -27,3 +27,9 @@
           - org.kde.kleopatra
         method: "user"
         state: present
+
+    - name: Clone TPM
+      ansible.builtin.git:
+        repo: https://github.com/tmux-plugins/tpm
+        dest: ~/.config/tmux/plugins/tpm
+        version: master
