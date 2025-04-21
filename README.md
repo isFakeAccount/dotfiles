@@ -44,8 +44,12 @@ chezmoi --verbose apply
 chezmoi --verbose -i files,symlinks,templates apply 
 ```
 
-
 **Pull changes from a remote repository and apply them**:
 ```sh
 chezmoi update
+```
+
+**Clear the state of run_once_ scripts**
+```sh
+chezmoi state delete-bucket --bucket=scriptState
 ```
