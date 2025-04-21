@@ -1,0 +1,35 @@
+---
+- name: NVM and Node.js Setup with XDG_DATA_HOME
+  hosts: localhost
+  become: false
+  connection: local
+  gather_facts: true
+
+  vars:
+    xdg_data_home: "{{ lookup('env', 'XDG_DATA_HOME') | default(ansible_env.HOME ~ '/.local/share', true) }}"
+    nvm_dir: "{{ xdg_data_home }}/nvm"
+
+  tasks:
+    - name: Install NVM
+      ansible.builtin.shell: >
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+      args:
+        executable: /bin/bash
+        creates: "{{ nvm_dir }}/nvm.sh"
+      environment:
+        NVM_DIR: "{{ nvm_dir }}"
+        XDG_DATA_HOME: "{{ xdg_data_home }}"
+      tags:
+        - node
+
+    - name: Install latest Node.js using NVM
+      shell: |
+        export NVM_DIR="{{ nvm_dir }}"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+        nvm install node
+      args:
+        executable: /bin/bash
+      environment:
+        NVM_DIR: "{{ nvm_dir }}"
+      tags:
+        - node

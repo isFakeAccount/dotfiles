@@ -43,3 +43,7 @@ symlink_to_localbin() {
 uv_shell() {
     uv run --no-project "$SHELL"
 }
+
+upgrade_node() {
+    nvm install node --reinstall-packages-from=node
+}
