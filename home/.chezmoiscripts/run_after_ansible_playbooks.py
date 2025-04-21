@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import subprocess
 from tempfile import TemporaryDirectory
 from typing import Any, TypedDict
