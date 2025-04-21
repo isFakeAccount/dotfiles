@@ -13,6 +13,11 @@ main() {
     fi
 
     source "$venv_dir/bin/activate"
+    if [ $? -ne 0 ]; then
+        echo "Error: Could not activate virtual environment at $venv_dir" >&2
+        exit 1
+    fi
+
     pip install -r "$chezmoi_dir/home/requirements.txt"
 }
 

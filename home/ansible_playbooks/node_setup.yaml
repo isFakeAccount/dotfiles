@@ -10,6 +10,14 @@
     nvm_dir: "{{ xdg_data_home }}/nvm"
 
   tasks:
+    - name: Ensure NVM_DIR exists
+      file:
+        path: "{{ nvm_dir }}"
+        state: directory
+        mode: "0755"
+      tags:
+        - node
+
     - name: Install NVM
       ansible.builtin.shell: >
         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
