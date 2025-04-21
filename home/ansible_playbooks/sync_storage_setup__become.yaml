@@ -10,8 +10,13 @@
       ansible.builtin.package:
         name:
           - syncthing
-          - rclone
         state: present
+
+    - name: Install rclone via official install script
+      ansible.builtin.shell: |
+        curl https://rclone.org/install.sh | bash
+      args:
+        executable: /bin/bash
 
     - name: Install Flatpak packages
       become: false
