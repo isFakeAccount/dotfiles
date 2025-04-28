@@ -17,6 +17,7 @@
         curl https://rclone.org/install.sh | bash
       args:
         executable: /bin/bash
+      ignore_errors: true
 
     - name: Install Flatpak packages
       become: false
