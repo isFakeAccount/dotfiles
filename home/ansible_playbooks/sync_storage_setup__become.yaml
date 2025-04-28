@@ -22,6 +22,7 @@
       become: false
       community.general.flatpak:
         name:
+          - com.zettlr.Zettlr
           - md.obsidian.Obsidian
           - org.cryptomator.Cryptomator
           - org.filezillaproject.Filezilla

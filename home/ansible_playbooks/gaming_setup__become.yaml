@@ -1,17 +1,21 @@
 ---
-- name: Setup NVIDIA GPU Utilities and Game Launchers
+- name: Setup Game Launchers
   hosts: localhost
   become: false
   connection: local
   gather_facts: false
 
   tasks:
-    - name: Install NVIDIA GPU Utilities and Game Launchers
+    - name: Install Game Launchers via Flatpak
       community.general.flatpak:
         name:
           - com.heroicgameslauncher.hgl
-          - com.leinardi.gwe
           - net.davidotek.pupgui2
-          - org.coolero.Coolero
         method: "user"
+        state: present
+
+    - name: Install Steam via system package manager
+      become: true
+      ansible.builtin.package:
+        name: steam
         state: present

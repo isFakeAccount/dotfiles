@@ -1,0 +1,46 @@
+---
+- name: Setup NVIDIA GPU Utilities and CoolerControl
+  hosts: localhost
+  become: false
+  connection: local
+  gather_facts: true
+
+  tasks:
+    - name: Install NVIDIA GPU Utilities via Flatpak
+      community.general.flatpak:
+        name:
+          - com.leinardi.gwe
+        method: "user"
+        state: present
+
+    - name: Install CoolerControl Download Dependencies
+      become: true
+      ansible.builtin.package:
+        name:
+          - curl
+          - apt-transport-https
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Add CoolerControl setup script repository (Debian-based)
+      become: true
+      shell: |
+        curl -1sLf 'https://dl.cloudsmith.io/public/coolercontrol/coolercontrol/setup.deb.sh' | distro=ubuntu sudo -E bash
+      when: ansible_os_family == "Debian"
+
+    - name: Install coolercontrol and coolercontrol-liqctld
+      become: true
+      ansible.builtin.package:
+        name:
+          - coolercontrol
+          - coolercontrol-liqctld
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Enable and start coolercontrold service
+      become: true
+      ansible.builtin.systemd:
+        name: coolercontrold
+        enabled: yes
+        state: started
+      when: ansible_os_family == "Debian"
