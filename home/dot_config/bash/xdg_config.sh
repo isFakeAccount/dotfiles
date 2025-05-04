@@ -6,7 +6,7 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 
 export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
-export ANDROID_HOME="$XDG_DATA_HOME/android/sdk"
+export ANDROID_HOME="$XDG_DATA_HOME/android/Sdk"
 export ANDROID_USER_HOME="$XDG_DATA_HOME/android"
 export ANSIBLE_HOME="$XDG_DATA_HOME/ansible"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
