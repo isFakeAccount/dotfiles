@@ -69,7 +69,12 @@ def create_global_gitconfig(git_account_dirs: list[Path]) -> None:
 
     :param git_account_dirs: List of paths to directories containing .gitconfig files.
     """
-    git_config_path = user_config_path("git", False) / "config"
+    git_global_config_dir = user_config_path("git", False)
+    git_global_config_dir.mkdir(parents=True, exist_ok=True)
+
+    git_config_path = git_global_config_dir / "config"
+    git_config_path.touch(exist_ok=True)
+
     with GitConfigParser(git_config_path, read_only=False) as config_parser:
         # Set default branch to 'master'
         config_parser.set_value("init", "defaultBranch", "master")
