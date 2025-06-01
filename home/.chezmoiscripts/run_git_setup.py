@@ -83,10 +83,10 @@ def create_global_gitconfig(git_account_dirs: list[Path]) -> None:
         config_parser.set_value("core", "editor", "code")
         # Improve diff readability with word-based coloring
         config_parser.set_value("diff", "colorMoved", "zebra")
-        # Auto-stash before rebasing to prevent conflicts
-        config_parser.set_value("rebase", "autoStash", "true")
         # Enable auto-completion for Git commands
         config_parser.set_value("completion", "bash", "true")
+        # Set submodule to update automatically on git pull
+        config_parser.set_value("submodule", "recurse", True)
 
         for account_dir in git_account_dirs:
             if account_dir.is_dir() and (account_dir / ".gitconfig").exists():
