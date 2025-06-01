@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
+from posixpath import expanduser
 
 from git import GitConfigParser
 from platformdirs import user_config_path, user_data_path
@@ -47,7 +48,7 @@ def create_symlinks_for_all_gitconfigs() -> list[Path]:
             input(
                 f"Enter the file path where you want to create the symlink for {account_dir.name}_gitconfig: "
             ).strip()
-        ).resolve()
+        ).expanduser().absolute()
         symlink_gitconfig_path = symlink_path / ".gitconfig"
         if symlink_gitconfig_path.exists() or symlink_gitconfig_path.is_symlink():
             symlink_gitconfig_path.unlink()
