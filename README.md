@@ -4,8 +4,14 @@ Yoshikage Kira 's dotfiles, managed with [`chezmoi`](https://github.com/twpayne/
 
 ## Installation
 
-1. Clone this repo to ~/.local/share/chezmoi
-2. Run the ./install.sh script
+1. Clone this repo to ~/.local/share/chezmoi.
+
+    ```sh
+    git clone https://github.com/isFakeAccount/dotfiles.git ~/.local/share/chezmoi
+    ```
+2. Install `python3-venv` and `python3-pip` if necessary.
+3. `cd` into the repo, create a python venv and activate it.
+4. Run the ./install.sh script.
 
 ## Chezmoi Quick Commands
 
