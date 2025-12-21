@@ -9,7 +9,7 @@
       become: false
       community.general.flatpak:
         name:
-          - com.discordapp.Discord
+          - dev.vencord.Vesktop
           - com.github.tchx84.Flatseal
           - com.google.Chrome
           - com.usebottles.bottles
