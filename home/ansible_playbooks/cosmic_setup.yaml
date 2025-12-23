@@ -1,0 +1,14 @@
+---
+- name: Cosmic Setup
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Install Flatpak packages
+      become: false
+      community.general.flatpak:
+        name:
+          - dev.edfloreshz.CosmicTweaks
+        method: "user"
+        state: present

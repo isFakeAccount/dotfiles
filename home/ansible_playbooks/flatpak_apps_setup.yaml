@@ -16,5 +16,6 @@
           - io.github.flattool.Warehouse
           - io.gitlab.librewolf-community
           - org.remmina.Remmina
+          - io.github.seadve.Kooha
         method: "user"
         state: present
