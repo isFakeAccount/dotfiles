@@ -1,4 +1,5 @@
 git_configs/
+home/ansible_playbooks/*_playbook.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

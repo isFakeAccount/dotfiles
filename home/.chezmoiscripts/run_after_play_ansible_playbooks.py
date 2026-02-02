@@ -82,13 +82,9 @@ def run_playbook(
 
 def main():
     PLAYBOOKS: dict[str, PlaybookInfo] = {}
+    playbook_files = (CHEZMOI_DIR / "home" / "ansible_playbooks").glob("*_playbook.yaml")
 
-    for ansible_playbook in sorted(
-        (CHEZMOI_DIR / "home" / "ansible_playbooks").iterdir()
-    ):
-        if "setup" not in ansible_playbook.name:
-            continue
-
+    for ansible_playbook in playbook_files:
         playbook: PlaybookInfo = {
             "filename": ansible_playbook.name,
             "sudo": True if "become" in ansible_playbook.name else False,

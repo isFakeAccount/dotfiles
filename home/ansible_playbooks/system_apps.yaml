@@ -1,0 +1,112 @@
+# Config to install system applications
+# Read by home/.chezmoiscripts/run_after_ansible_playbooks.py
+programming:
+  vscode:
+    default:
+      method: system_package
+      system_package: code
+
+  git:
+    default:
+      method: system_package
+      system_package: git
+
+  neovim:
+    default:
+      method: system_package
+      system_package: neovim
+
+  tmux:
+    default:
+      method: system_package
+      system_package: tmux
+
+programming_languages:
+  rustup:
+    default:
+      method: system_package
+      system_package: rustup
+
+    debian:
+      method: script
+      script:
+        url: https://sh.rustup.rs
+        interpreter: bash
+
+  uv:
+    default:
+      method: system_package
+      system_package: uv
+
+    debian:
+      method: script
+      script:
+        url: https://astral.sh/uv/install.sh
+        interpreter: bash
+        environment:
+          INSTALLER_NO_MODIFY_PATH: "1"
+
+  nvm:
+    default:
+      method: system_package
+      system_package: nvm
+
+    debian:
+      method: script
+      script:
+        url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh
+        environment:
+          NVM_DIR: "{{ nvm_dir }}"
+          XDG_DATA_HOME: "{{ xdg_data_home }}"
+        vars:
+          xdg_data_home: "{{ lookup('env', 'XDG_DATA_HOME') | default(ansible_env.HOME ~ '/.local/share', true) }}"
+          nvm_dir: "{{ xdg_data_home }}/nvm"
+
+gaming:
+  steam:
+    default:
+      method: system_package
+      system_package: steam
+
+sync_storage:
+  syncthing:
+    default:
+      method: system_package
+      system_package: syncthing
+
+  rclone:
+    default:
+      method: system_package
+      system_package: rclone
+
+    debian:
+      method: script
+      script:
+        url: https://rclone.org/install.sh
+        interpreter: bash
+
+utilities:
+  curl:
+    default:
+      method: system_package
+      system_package: curl
+
+  exfatprogs:
+    default:
+      method: system_package
+      system_package: exfatprogs
+
+  ratbagd:
+    default:
+      method: system_package
+      system_package: ratbagd
+
+  ripgrep:
+    default:
+      method: system_package
+      system_package: ripgrep
+
+  xdg-user-dirs:
+    default:
+      method: system_package
+      system_package: xdg-user-dirs

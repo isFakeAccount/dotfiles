@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 from pathlib import Path
-from posixpath import expanduser
 
 from git import GitConfigParser
 from platformdirs import user_config_path, user_data_path

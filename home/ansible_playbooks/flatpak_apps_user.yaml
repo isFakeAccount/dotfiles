@@ -1,0 +1,40 @@
+# Config to install Flatpak applications at user level
+# Read by home/.chezmoiscripts/run_after_ansible_playbooks.py
+3d_printing:
+  - com.ultimaker.cura
+  - org.freecad.FreeCAD
+browsers:
+  - com.google.Chrome
+  - io.gitlab.librewolf-community
+chatting:
+  - dev.vencord.Vesktop
+  - im.riot.Riot
+  - com.mattermost.Desktop
+cosmic:
+  - dev.edfloreshz.CosmicTweaks
+flatpak_utils:
+  - io.github.flattool.Warehouse
+  - com.github.tchx84.Flatseal
+gaming:
+  - com.heroicgameslauncher.hgl
+  - com.vysp3r.ProtonPlus
+gnome:
+  - ca.desrt.dconf-editor
+  - com.mattjakeman.ExtensionManager
+nvidia:
+  - io.github.ilya_zlobintsev.LACT
+office:
+  - com.zettlr.Zettlr
+  - md.obsidian.Obsidian
+programming:
+  - cc.arduino.IDE2
+  - com.axosoft.GitKraken
+  - com.mongodb.Compass
+  - org.kde.kleopatra
+utilities:
+  - com.usebottles.bottles
+  - io.github.seadve.Kooha
+  - org.cryptomator.Cryptomator
+  - org.filezillaproject.Filezilla
+  - org.freedesktop.Piper
+  - org.remmina.Remmina

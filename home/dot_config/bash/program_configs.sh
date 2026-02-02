@@ -6,7 +6,9 @@
 # Cargo: Rust build system
 if [ -d "$XDG_DATA_HOME/cargo" ]; then
     # shellcheck source="$XDG_DATA_HOME/cargo/env"
-    . "$XDG_DATA_HOME/cargo/env"
+    if [ -f "$XDG_DATA_HOME/cargo/env" ]; then
+        . "$XDG_DATA_HOME/cargo/env"
+    fi
 fi
 
 # Nvm: Node version manager
@@ -17,7 +19,3 @@ fi
 if [ -d "$XDG_DATA_HOME/JetBrains/Toolbox/scripts" ] && ! echo "$PATH" | grep -q "$XDG_DATA_HOME/JetBrains/Toolbox/scripts"; then
     export PATH="$PATH:$XDG_DATA_HOME/JetBrains/Toolbox/scripts"
 fi
-
-# pyenv: Python version manager
-# command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-# eval "$(pyenv init -)"

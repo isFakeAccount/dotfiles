@@ -1,0 +1,4 @@
+# Config to install Flatpak applications at system level
+# Read by home/.chezmoiscripts/run_after_ansible_playbooks.py
+utilities:
+  - com.dec05eba.gpu_screen_recorder
