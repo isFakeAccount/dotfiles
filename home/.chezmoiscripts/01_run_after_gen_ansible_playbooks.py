@@ -102,7 +102,7 @@ class LinuxPackage:
     def to_flatpak_list(cls, package_names: Sequence[str], become: bool) -> list[Self]:
         return [
             cls(
-                display_name=package_name,
+                display_name=package_name,  # for flatpak idc about display name. Could be made better in future.
                 package_name=package_name,
                 executable_name=package_name,
                 method=PackageInstallMethod.FLATPAK,
@@ -132,7 +132,7 @@ def get_linux_distro_base() -> LinuxDistroBase:
         raise ValueError("Unsupported or unrecognized Linux distribution.")
 
 
-def make_syspkg_install_task(linux_package_names: list[str], become: bool) -> dict[str, object]:
+def make_system_pkg_install_task(linux_package_names: list[str], become: bool) -> dict[str, object]:
     """Create an Ansible task for installing system packages.
 
     :param linux_package_names: A list of Linux package names to install.
@@ -189,7 +189,7 @@ def make_script_install_task(
     """
     temp_sh_path = tempfile.TemporaryDirectory(prefix=f"{linux_package.package_name}_installer_", delete=False)
 
-    check_step = {
+    check_if_installed_step = {
         "name": f"Check if {linux_package.package_name} is already installed",
         "ansible.builtin.shell": {
             "cmd": f"command -v {linux_package.executable_name}",
@@ -226,11 +226,11 @@ def make_script_install_task(
     }
 
     if script_pkg.post_install_packages is None:
-        return [check_step, download_step, install_step]
+        return [check_if_installed_step, download_step, install_step]
 
-    post_install_step = make_syspkg_install_task(linux_package_names=script_pkg.post_install_packages, become=True)
+    post_install_step = make_system_pkg_install_task(linux_package_names=script_pkg.post_install_packages, become=True)
     post_install_step["when"] = f"{linux_package.package_name}_check.failed"
-    return [check_step, download_step, install_step, post_install_step]
+    return [check_if_installed_step, download_step, install_step, post_install_step]
 
 
 def package_selection_menu(
@@ -297,8 +297,9 @@ def flatpak_install_wizard(packages_dict: dict[str, list[str]], method: Literal[
 
 def system_package_wizard(packages_dict: dict[str, list[str]]) -> list[LinuxPackage]:
     unique_selection = package_selection_menu(packages_dict)
-    # Converts the selection list to list of LinuxPackages so it is easier
-    # use them later when writing Ansible playbooks.
+
+    # Converts to LinuxPackage as well as picks the right installation method
+    # based on the current distro
     distro_packages = []
     for packages_names in packages_dict.values():
         for package_display_name, package_metadata in packages_names.items():
@@ -306,8 +307,8 @@ def system_package_wizard(packages_dict: dict[str, list[str]]) -> list[LinuxPack
                 continue
 
             current_distro = get_linux_distro_base()
-            installation_type = package_metadata.get(current_distro.value, package_metadata["default"])
-            distro_packages.append(LinuxPackage.from_dict(display_name=package_display_name, data=installation_type))
+            installation_metadata = package_metadata.get(current_distro.value, package_metadata["default"])
+            distro_packages.append(LinuxPackage.from_dict(display_name=package_display_name, data=installation_metadata))
 
     return distro_packages
 
@@ -366,7 +367,7 @@ def generate_ansible_playbook_for_packages(packages: list[LinuxPackage], playboo
 
     if system_packages:
         playbook_content[0]["tasks"].append(
-            make_syspkg_install_task(
+            make_system_pkg_install_task(
                 linux_package_names=[x.package_name for x in system_packages],
                 become=True,
             )
