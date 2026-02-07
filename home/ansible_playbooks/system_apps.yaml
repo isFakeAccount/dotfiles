@@ -1,112 +1,153 @@
 # Config to install system applications
 # Read by home/.chezmoiscripts/run_after_ansible_playbooks.py
-programming:
-  vscode:
-    default:
-      method: system_package
-      system_package: code
-
-  git:
-    default:
-      method: system_package
-      system_package: git
-
-  neovim:
-    default:
-      method: system_package
-      system_package: neovim
-
-  tmux:
-    default:
-      method: system_package
-      system_package: tmux
-
-programming_languages:
-  rustup:
-    default:
-      method: system_package
-      system_package: rustup
-
-    debian:
-      method: script
-      script:
-        url: https://sh.rustup.rs
-        interpreter: bash
-
-  uv:
-    default:
-      method: system_package
-      system_package: uv
-
-    debian:
-      method: script
-      script:
-        url: https://astral.sh/uv/install.sh
-        interpreter: bash
-        environment:
-          INSTALLER_NO_MODIFY_PATH: "1"
-
-  nvm:
-    default:
-      method: system_package
-      system_package: nvm
-
-    debian:
-      method: script
-      script:
-        url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh
-        environment:
-          NVM_DIR: "{{ nvm_dir }}"
-          XDG_DATA_HOME: "{{ xdg_data_home }}"
-        vars:
-          xdg_data_home: "{{ lookup('env', 'XDG_DATA_HOME') | default(ansible_env.HOME ~ '/.local/share', true) }}"
-          nvm_dir: "{{ xdg_data_home }}/nvm"
-
+---
 gaming:
   steam:
     default:
-      method: system_package
-      system_package: steam
-
+      become: true
+      executable_name: "steam"
+      method: "system_package"
+      system_package: "steam"
+programming:
+  git:
+    default:
+      become: true
+      executable_name: "git"
+      method: "system_package"
+      system_package: "git"
+  neovim:
+    default:
+      become: true
+      executable_name: "nvim"
+      method: "system_package"
+      system_package: "neovim"
+  tmux:
+    default:
+      become: true
+      executable_name: "tmux"
+      method: "system_package"
+      system_package: "tmux"
+  vscode:
+    default:
+      become: true
+      executable_name: "code"
+      method: "system_package"
+      system_package: "code"
+programming_languages:
+  nvm:
+    debian:
+      become: false
+      executable_name: "node"
+      method: "script"
+      script:
+        environment:
+          NVM_DIR: "{{ nvm_dir }}"
+          XDG_DATA_HOME: "{{ xdg_data_home }}"
+        url: "https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh"
+        vars:
+          nvm_dir: "{{ xdg_data_home }}/nvm"
+          xdg_data_home: "{{ lookup('env', 'XDG_DATA_HOME') | default(ansible_env.HOME ~ '/.local/share', true) }}"
+    default:
+      become: true
+      executable_name: "node"
+      method: "system_package"
+      system_package: "nvm"
+  rustup:
+    debian:
+      become: false
+      executable_name: "rustup"
+      method: "script"
+      script:
+        interpreter: "bash"
+        url: "https://sh.rustup.rs"
+    default:
+      become: true
+      executable_name: "rustup"
+      method: "system_package"
+      system_package: "rustup"
+  uv:
+    debian:
+      become: false
+      executable_name: "uv"
+      method: "script"
+      script:
+        environment:
+          INSTALLER_NO_MODIFY_PATH: "1"
+        interpreter: "bash"
+        url: "https://astral.sh/uv/install.sh"
+    default:
+      become: true
+      executable_name: "uv"
+      method: "system_package"
+      system_package: "uv"
 sync_storage:
+  rclone:
+    debian:
+      become: false
+      executable_name: "rclone"
+      method: "script"
+      script:
+        interpreter: "bash"
+        url: "https://rclone.org/install.sh"
+    default:
+      become: true
+      executable_name: "rclone"
+      method: "system_package"
+      system_package: "rclone"
   syncthing:
     default:
-      method: system_package
-      system_package: syncthing
-
-  rclone:
-    default:
-      method: system_package
-      system_package: rclone
-
-    debian:
-      method: script
-      script:
-        url: https://rclone.org/install.sh
-        interpreter: bash
-
+      become: true
+      executable_name: "syncthing"
+      method: "system_package"
+      system_package: "syncthing"
 utilities:
+  cooler-control:
+    default:
+      become: true
+      executable_name: "coolercontrol"
+      method: "system_package"
+      system_package: "coolercontrol"
+    arch:
+      executable_name: "coolercontrol"
+      method: "paru"
+      paru: "coolercontrol-bin"
+    debian:
+      become: true
+      executable_name: "coolercontrol"
+      method: "script"
+      script:
+        interpreter: "bash"
+        post_install_packages:
+          - "coolercontrol"
+          - "liquidctl"
+        url: "https://dl.cloudsmith.io/public/coolercontrol/coolercontrol/setup.deb.sh"
   curl:
     default:
-      method: system_package
-      system_package: curl
-
+      become: true
+      executable_name: "curl"
+      method: "system_package"
+      system_package: "curl"
   exfatprogs:
     default:
-      method: system_package
-      system_package: exfatprogs
-
+      become: true
+      executable_name: "mkfs.exfat"
+      method: "system_package"
+      system_package: "exfatprogs"
   ratbagd:
     default:
-      method: system_package
-      system_package: ratbagd
-
+      become: true
+      executable_name: "ratbagd"
+      method: "system_package"
+      system_package: "ratbagd"
   ripgrep:
     default:
-      method: system_package
-      system_package: ripgrep
-
+      become: true
+      executable_name: "rg"
+      method: "system_package"
+      system_package: "ripgrep"
   xdg-user-dirs:
     default:
-      method: system_package
-      system_package: xdg-user-dirs
+      become: true
+      executable_name: "xdg-user-dirs-update"
+      method: "system_package"
+      system_package: "xdg-user-dirs"

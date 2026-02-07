@@ -51,14 +51,10 @@ def get_become_pass() -> questionary.Question:
     return become_pass
 
 
-def run_playbook(
-    playbook_name: str, playbook_info: PlaybookInfo, private_data_dir: str
-) -> None:
+def run_playbook(playbook_name: str, playbook_info: PlaybookInfo, private_data_dir: str) -> None:
     global cached_become_pass
 
-    playbook_path = (
-        CHEZMOI_DIR / "home" / "ansible_playbooks" / playbook_info["filename"]
-    )
+    playbook_path = CHEZMOI_DIR / "home" / "ansible_playbooks" / playbook_info["filename"]
 
     runner_args: dict[str, Any] = {
         "private_data_dir": private_data_dir,
