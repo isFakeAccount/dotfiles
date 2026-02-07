@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import re
 import tempfile
 from collections.abc import Sequence
 from dataclasses import dataclass
@@ -374,15 +375,28 @@ def generate_ansible_playbook_for_packages(packages: list[LinuxPackage], playboo
     if scripts_install_tasks:
         playbook_content[0]["tasks"].extend(scripts_install_tasks)
 
+    yaml_text = yaml.safe_dump(
+        playbook_content,
+        explicit_start=True,
+        sort_keys=False,
+        indent=4,
+        width=120,
+        default_flow_style=False,
+    )
+
+    task_pattern = re.compile(r"^\s*-\s+name:")
+
+    lines = yaml_text.splitlines()
+    new_lines = []
+    for line in lines:
+        if task_pattern.match(line) and new_lines:
+            new_lines.append("")
+        new_lines.append(line)
+
+    yaml_text = "\n".join(new_lines)
+
     with playbook_path.open("w") as fp:
-        yaml.safe_dump(
-            playbook_content,
-            fp,
-            explicit_start=True,
-            sort_keys=False,
-            indent=4,
-            width=1000,
-        )
+        fp.write(yaml_text)
 
 
 def main():
