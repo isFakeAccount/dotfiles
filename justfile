@@ -3,6 +3,14 @@
 just-fmt:
     just --fmt --unstable
 
+# Runs the formatter for python scripts in the .chezmoiscripts directory.
+fmt:
+    ruff format home/.chezmoiscripts/
+    docstrfmt home/.chezmoiscripts/*.py -v
+
+checker:
+    mypy home/.chezmoiscripts/
+
 # Creates python .venv
 create-venv:
     python3 -m venv .venv
@@ -26,3 +34,11 @@ chezmoi-update:
 # Resets the state of the script execution state (states like before/after script execution, etc.)
 reset-chezmoi-script-state:
     chezmoi state delete-bucket --bucket=scriptState
+
+# Run the generate playbook python script
+run-gen-pb:
+    .venv/bin/python home/.chezmoiscripts/01_run_after_gen_ansible_playbooks.py
+
+# Run the python script to play the generated playbooks
+run-play-pb:
+    .venv/bin/python home/.chezmoiscripts/02_run_after_play_ansible_playbooks.py

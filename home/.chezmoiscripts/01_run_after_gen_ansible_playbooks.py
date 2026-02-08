@@ -2,7 +2,7 @@
 
 import re
 import tempfile
-from collections.abc import Sequence
+from collections.abc import Iterable
 from dataclasses import dataclass
 from enum import Enum, StrEnum
 from pathlib import Path
@@ -86,20 +86,20 @@ class LinuxPackage:
     script_extra: ScriptPackageMetadata | None
 
     @classmethod
-    def from_dict(cls, display_name: str, data: dict[str, Any]) -> Self:
-        method = PackageInstallMethod(data["method"])
-        package_name = data[method] if method != PackageInstallMethod.SCRIPT else data["executable_name"]
+    def to_system_package(cls, package_display_name: str, installation_metadata: dict[str, Any]) -> Self:
+        method = PackageInstallMethod(installation_metadata["method"])
+        package_name = installation_metadata[method] if method != PackageInstallMethod.SCRIPT else installation_metadata["executable_name"]
         return cls(
-            display_name=display_name,
+            display_name=package_display_name,
             package_name=package_name,
-            executable_name=data["executable_name"],
+            executable_name=installation_metadata["executable_name"],
             method=method,
-            become=data.get("become", False),
-            script_extra=ScriptPackageMetadata.from_dict(data["script"]) if method == PackageInstallMethod.SCRIPT else None,
+            become=installation_metadata.get("become", False),
+            script_extra=ScriptPackageMetadata.from_dict(installation_metadata["script"]) if method == PackageInstallMethod.SCRIPT else None,
         )
 
     @classmethod
-    def to_flatpak_list(cls, package_names: Sequence[str], become: bool) -> list[Self]:
+    def to_flatpak_list(cls, package_names: Iterable[str], become: bool) -> list[Self]:
         return [
             cls(
                 display_name=package_name,  # for flatpak idc about display name. Could be made better in future.
@@ -234,7 +234,7 @@ def make_script_install_task(
 
 
 def package_selection_menu(
-    packages_dict: dict[str, list[str | dict[str, Any]]],
+    packages_dict: dict[str, list[str]] | dict[str, dict[str, Any]],
 ) -> set[str]:
     """Generates selection menu from the packages dict and returns the user selection.
 
@@ -244,6 +244,15 @@ def package_selection_menu(
 
     """
 
+    def expand_selection(selected: list[str]) -> set[str]:
+        expanded: set[str] = set()
+        for item in selected:
+            if item in packages_dict:
+                expanded.update(packages_dict[item])
+            else:
+                expanded.add(item)
+        return expanded
+
     menu_style = Style(
         [
             ("menu_header", "bold"),
@@ -251,7 +260,7 @@ def package_selection_menu(
         ]
     )
 
-    flattened_choices = ["All (all packages below)"]
+    flattened_choices: list[str | Choice] = ["All (all packages below)"]
     for packages_category, packages_list in packages_dict.items():
         flattened_choices.append(
             Choice(
@@ -266,36 +275,41 @@ def package_selection_menu(
 
     selected_items = questionary.checkbox("Select the packages to install:", choices=flattened_choices, style=menu_style).ask()
 
-    unique_selection = set()
+    unique_selection: set[str] = set()
 
     # If user selects all packages then dump all packages into selection
     if "All (all packages below)" in selected_items:
-        for packages_list in packages_dict.values():
-            unique_selection.update(packages_list)
-        return unique_selection
+        unique_selection.update(*packages_dict.values())
+        negative_selection = expand_selection(selected_items[1:])
+        return unique_selection.difference(negative_selection)
 
-    for selection in selected_items:
-        # Handles if a category is selected
-        if selection in packages_dict:
-            unique_selection.update(packages_dict[selection])
-        else:
-            # Handles individual packages
-            unique_selection.add(selection)
-
+    unique_selection.update(expand_selection(selected_items))
     return unique_selection
 
 
 def flatpak_install_wizard(packages_dict: dict[str, list[str]], method: Literal["System", "User"]) -> list[LinuxPackage]:
-    """Reads the flatpak apps config and prompts the user to select apps to install.
+    """Prompt the user to select Flatpak packages to install.
 
-    :returns: A set of selected flatpak app identifiers.
+    :param packages_dict: Mapping of categories to Flatpak application IDs.
+    :param method: Installation scope (``"System"`` or ``"User"``).
+
+    :returns: Selected Flatpak packages as :class:`LinuxPackage` objects.
 
     """
     selected_packages = package_selection_menu(packages_dict)
     return LinuxPackage.to_flatpak_list(package_names=selected_packages, become=method == "System")
 
 
-def system_package_wizard(packages_dict: dict[str, list[str]]) -> list[LinuxPackage]:
+def system_package_wizard(packages_dict: dict[str, dict[str, Any]]) -> list[LinuxPackage]:
+    """Prompt the user to select system packages to install.
+
+    Distro-specific installation metadata is selected automatically, with a fallback to ``default``.
+
+    :param packages_dict: Mapping of package display names to installation metadata.
+
+    :returns: Selected system packages as :class:`LinuxPackage` objects.
+
+    """
     unique_selection = package_selection_menu(packages_dict)
 
     # Converts to LinuxPackage as well as picks the right installation method
@@ -308,7 +322,7 @@ def system_package_wizard(packages_dict: dict[str, list[str]]) -> list[LinuxPack
 
             current_distro = get_linux_distro_base()
             installation_metadata = package_metadata.get(current_distro.value, package_metadata["default"])
-            distro_packages.append(LinuxPackage.from_dict(display_name=package_display_name, data=installation_metadata))
+            distro_packages.append(LinuxPackage.to_system_package(package_display_name=package_display_name, installation_metadata=installation_metadata))
 
     return distro_packages
 
@@ -336,9 +350,11 @@ def generate_ansible_playbook_for_packages(packages: list[LinuxPackage], playboo
         elif package.method == PackageInstallMethod.SYSTEM_PACKAGE:
             system_packages.append(package)
         elif package.method == PackageInstallMethod.SCRIPT:
+            if package.script_extra is None:
+                raise ValueError(f"Package {package.display_name} has method 'script' but no script metadata provided.")
             scripts_install_tasks.extend(make_script_install_task(package, package.script_extra))
 
-    playbook_content = [
+    playbook_content: list[dict[str, Any]] = [
         {
             "name": "Install selected packages",
             "hosts": "localhost",
@@ -388,7 +404,7 @@ def generate_ansible_playbook_for_packages(packages: list[LinuxPackage], playboo
     task_pattern = re.compile(r"^\s*-\s+name:")
 
     lines = yaml_text.splitlines()
-    new_lines = []
+    new_lines: list[str] = []
     for line in lines:
         if task_pattern.match(line) and new_lines:
             new_lines.append("")
@@ -400,7 +416,7 @@ def generate_ansible_playbook_for_packages(packages: list[LinuxPackage], playboo
         fp.write(yaml_text)
 
 
-def main():
+def main() -> None:
     playbooks_dir = CHEZMOI_DIR / "home" / "ansible_playbooks"
 
     flatpak_user_install_file = playbooks_dir / "flatpak_apps_user.yaml"

@@ -18,7 +18,7 @@ main() {
         exit 1
     fi
 
-    pip install -r "$chezmoi_dir/home/requirements.txt"
+    pip install -r "$chezmoi_dir/requirements.txt"
 }
 
 main
