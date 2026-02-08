@@ -56,7 +56,7 @@ chezmoi --verbose apply
 **Apply the changes only for specified types like file changes, symlinks, and templates. So basically no scripts are run.**
 
 ```sh
-chezmoi --verbose -i files,symlinks,templates apply 
+chezmoi --verbose -i dirs,files,remove,symlinks,templates apply
 ```
 
 ### Pull changes from a remote repository and apply them

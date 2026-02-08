@@ -43,6 +43,7 @@ programming_languages:
         environment:
           NVM_DIR: "{{ nvm_dir }}"
           XDG_DATA_HOME: "{{ xdg_data_home }}"
+          PROFILE: "/dev/null"
         url: "https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh"
         vars:
           nvm_dir: "{{ xdg_data_home }}/nvm"
@@ -60,6 +61,9 @@ programming_languages:
       script:
         interpreter: "bash"
         url: "https://sh.rustup.rs"
+        args:
+          - "-y"
+          - "--no-modify-path"
     default:
       become: true
       executable_name: "rustup"

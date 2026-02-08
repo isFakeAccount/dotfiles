@@ -49,6 +49,7 @@ class ScriptPackageMetadata:
     ansible_vars: dict[str, str]
     preinstall_packages: list[str] | None
     post_install_packages: list[str] | None
+    args: list[str] | None
     interpreter: Literal["bash", "python3"] = "bash"
 
     @classmethod
@@ -59,6 +60,7 @@ class ScriptPackageMetadata:
             ansible_vars=data.get("vars", {}),
             preinstall_packages=None,  # TODO: Add this feature later.
             post_install_packages=data.get("post_install_packages", None),
+            args=data.get("args", None),
             interpreter=data.get("interpreter", "bash"),
         )
 
@@ -215,7 +217,7 @@ def make_script_install_task(
     install_step = {
         "name": f"Install {linux_package.package_name} via script installer",
         "ansible.builtin.shell": {
-            "cmd": temp_sh_path.name + "/install.sh",
+            "cmd": temp_sh_path.name + "/install.sh " + " ".join(script_pkg.args or []),
         },
         "args": {
             "executable": f"/bin/{script_pkg.interpreter}",

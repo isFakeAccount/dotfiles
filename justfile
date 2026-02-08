@@ -25,7 +25,7 @@ chezmoi-apply-all:
 
 # Apply the changes only for specified types like file changes, symlinks, and templates. So basically no scripts are run.
 chezmoi-apply-files:
-    chezmoi --verbose -i files,symlinks,templates apply 
+    chezmoi --verbose -i dirs,files,remove,symlinks,templates apply 
 
 # Pull changes from a remote repository and apply them
 chezmoi-update:
@@ -37,8 +37,8 @@ reset-chezmoi-script-state:
 
 # Run the generate playbook python script
 run-gen-pb:
-    .venv/bin/python home/.chezmoiscripts/01_run_after_gen_ansible_playbooks.py
+    .venv/bin/python home/.chezmoiscripts/run_after_01_gen_ansible_playbooks.py
 
 # Run the python script to play the generated playbooks
 run-play-pb:
-    .venv/bin/python home/.chezmoiscripts/02_run_after_play_ansible_playbooks.py
+    .venv/bin/python home/.chezmoiscripts/run_after_02_play_ansible_playbooks.py
