@@ -1,3 +1,18 @@
+[project]
+name = "chezmoi"
+version = "0.1.0"
+description = "Yoshikage Kira's dotfiles, managed with chezmoi"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "ansible>=13.3.0",
+    "ansible-runner>=2.4.2",
+    "gitpython>=3.1.46",
+    "platformdirs>=4.5.1",
+    "questionary>=2.1.1",
+]
+
+
 [tool.ruff]
 line-length = 160
 
@@ -7,3 +22,6 @@ docstring-code-line-length = 120
 
 [tool.docstrfmt]
 line-length = 120
+
+[dependency-groups]
+linting = ["docstrfmt>=2.0.2", "ruff>=0.15.0"]

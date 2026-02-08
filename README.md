@@ -10,9 +10,10 @@ Yoshikage Kira 's dotfiles, managed with [`chezmoi`](https://github.com/twpayne/
     git clone https://github.com/isFakeAccount/dotfiles.git ~/.local/share/chezmoi
     ```
 
-2. Install `python3-venv` and `python3-pip` if necessary.
-3. `cd` into the repo, create a python venv and activate it.
-4. Run the ./install.sh script.
+2. Install `justfile` and `chezmoi` if necessary.
+3. Install `python3-venv` and `python3-pip` if necessary.
+4. `cd` into the repo, create a python `.venv` and activate it.
+5. Run the `chezmoi init` script.
 
 ## Chezmoi Quick Commands
 

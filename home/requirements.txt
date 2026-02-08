@@ -1,5 +1,0 @@
-ansible
-ansible-runner
-GitPython
-platformdirs
-questionary

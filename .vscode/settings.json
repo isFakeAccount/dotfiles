@@ -1,5 +1,9 @@
 {
     "shellcheck.customArgs": [
         "-P"
+    ],
+    "cSpell.words": [
+        "chezmoi",
+        "Justfile"
     ]
 }
