@@ -16,6 +16,7 @@ flatpak_utils:
   - io.github.flattool.Warehouse
   - com.github.tchx84.Flatseal
 gaming:
+  - com.github.Matoking.protontricks
   - com.heroicgameslauncher.hgl
   - com.vysp3r.ProtonPlus
 gnome:
