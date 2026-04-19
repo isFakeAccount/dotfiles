@@ -1,6 +1,6 @@
 [diff]
-command = "code"
-args = ["--wait", "--diff", "{{ .Destination }}", "{{ .Target }}"]
+command = "nvim"
+args = ["-d", "{{ .Destination }}", "{{ .Target }}"]
 
 [merge]
 command = "bash"
