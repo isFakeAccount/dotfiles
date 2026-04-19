@@ -8,7 +8,7 @@ fi
 
 source /etc/os-release
 
-if [[ "${ID:-}" != "arch" ]]; then
+if [[ "${ID:-}" != "arch" && "${ID_LIKE:-}" != "arch" ]]; then
     echo "Not Arch Linux (ID=${ID:-unknown}). Exiting."
     exit 0
 fi

@@ -78,9 +78,9 @@ def run_playbook(playbook_name: str, playbook_info: PlaybookInfo, private_data_d
 
 def main() -> None:
     PLAYBOOKS: dict[str, PlaybookInfo] = {}
-    playbook_files = (CHEZMOI_DIR / "home" / "ansible_playbooks").glob("*_playbook.yaml")
+    playbook_files = list((CHEZMOI_DIR / "home" / "ansible_playbooks").glob("*_playbook.yaml"))
 
-    if not list(playbook_files):
+    if not playbook_files:
         print("No playbooks found in the ansible_playbooks directory.")
         return
 
