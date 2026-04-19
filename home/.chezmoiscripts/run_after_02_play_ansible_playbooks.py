@@ -80,6 +80,10 @@ def main() -> None:
     PLAYBOOKS: dict[str, PlaybookInfo] = {}
     playbook_files = (CHEZMOI_DIR / "home" / "ansible_playbooks").glob("*_playbook.yaml")
 
+    if not list(playbook_files):
+        print("No playbooks found in the ansible_playbooks directory.")
+        return
+
     for ansible_playbook in playbook_files:
         playbook: PlaybookInfo = {
             "filename": ansible_playbook.name,

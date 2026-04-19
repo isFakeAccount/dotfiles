@@ -442,6 +442,10 @@ def main() -> None:
         *system_packages,
     ]
 
+    if not combined_packages:
+        print("No packages selected for installation. Exiting.")
+        return
+
     generate_ansible_playbook_for_packages(
         combined_packages,
         playbooks_dir / "universal_install_ansible_become_playbook.yaml",
