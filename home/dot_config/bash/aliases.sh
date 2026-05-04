@@ -21,7 +21,18 @@ alias extract_xz='tar -xJvf'
 alias extract_zip='unzip'
 
 # Program Alias
-alias grep='rg'
+if command -v rg &> /dev/null; then
+    alias grep='rg'
+fi
+
+if command -v eza &> /dev/null; then
+    # Replace ls with eza
+    alias ls='eza --color=always --group-directories-first'
+    alias la='eza -a --color=always --group-directories-first --header'
+    alias ll='eza -lagH --color=always --group-directories-first --header'
+    alias lt='eza -aT --color=always --group-directories-first --header -L'
+    alias l.="eza -a | grep -e '^\.'"
+fi
 
 # Stop after sending count ECHO_REQUEST packets #
 alias ping='ping -c 5'

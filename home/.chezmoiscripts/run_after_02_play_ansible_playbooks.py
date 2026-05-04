@@ -21,7 +21,7 @@ def load_env() -> dict[str, str]:
     return dict(os.environ)
 
 
-cached_become_pass = None
+cached_become_pass: questionary.Question | None = None
 
 
 def get_become_pass() -> questionary.Question:
@@ -33,11 +33,11 @@ def get_become_pass() -> questionary.Question:
     password_confirmed = False
 
     while not password_confirmed:
-        become_pass = questionary.password("Enter sudo password for ansible:").ask()
+        become_pass: questionary.Question = questionary.password("Enter sudo password for ansible:").ask()
 
         result = subprocess.run(
             ["sudo", "-S", "whoami"],
-            input=become_pass + "\n",
+            input=str(become_pass) + "\n",
             capture_output=True,
             text=True,
         )
@@ -51,14 +51,10 @@ def get_become_pass() -> questionary.Question:
     return become_pass
 
 
-def run_playbook(
-    playbook_name: str, playbook_info: PlaybookInfo, private_data_dir: str
-) -> None:
+def run_playbook(playbook_name: str, playbook_info: PlaybookInfo, private_data_dir: str) -> None:
     global cached_become_pass
 
-    playbook_path = (
-        CHEZMOI_DIR / "home" / "ansible_playbooks" / playbook_info["filename"]
-    )
+    playbook_path = CHEZMOI_DIR / "home" / "ansible_playbooks" / playbook_info["filename"]
 
     runner_args: dict[str, Any] = {
         "private_data_dir": private_data_dir,
@@ -80,15 +76,15 @@ def run_playbook(
         print(f"Playbook {playbook_name} completed successfully.")
 
 
-def main():
+def main() -> None:
     PLAYBOOKS: dict[str, PlaybookInfo] = {}
+    playbook_files = list((CHEZMOI_DIR / "home" / "ansible_playbooks").glob("*_playbook.yaml"))
 
-    for ansible_playbook in sorted(
-        (CHEZMOI_DIR / "home" / "ansible_playbooks").iterdir()
-    ):
-        if "setup" not in ansible_playbook.name:
-            continue
+    if not playbook_files:
+        print("No playbooks found in the ansible_playbooks directory.")
+        return
 
+    for ansible_playbook in playbook_files:
         playbook: PlaybookInfo = {
             "filename": ansible_playbook.name,
             "sudo": True if "become" in ansible_playbook.name else False,

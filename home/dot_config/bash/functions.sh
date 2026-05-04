@@ -47,3 +47,18 @@ uv_shell() {
 upgrade_node() {
     nvm install node --reinstall-packages-from=node
 }
+
+clean_apt_cache() {
+    if ! command -v apt &> /dev/null; then
+        warn "apt command not found. This function is intended for Debian-based systems." "${BASH_SOURCE[0]}" "${BASH_LINENO[0]}"
+        return 1
+    fi
+
+    sudo apt clean
+    sudo rm -r /var/lib/apt/lists/*
+    sudo apt update
+    sudo dpkg --configure -a
+    sudo apt install -f
+    sudo apt full-upgrade
+    sudo apt autoremove --purge
+}

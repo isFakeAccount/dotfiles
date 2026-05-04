@@ -2,17 +2,23 @@
 
 Yoshikage Kira 's dotfiles, managed with [`chezmoi`](https://github.com/twpayne/chezmoi).
 
+## Dependencies
+
+- `chezmoi`
+- `git`
+- `justfile`
+- `nvim`
+- `python3-pip`
+- `python3-venv`
+
 ## Installation
 
-1. Clone this repo to ~/.local/share/chezmoi.
+1. Install all dependencies.
+2. Run the following command to set up chezmoi:
 
     ```sh
-    git clone https://github.com/isFakeAccount/dotfiles.git ~/.local/share/chezmoi
+    chezmoi init isFakeAccount/dotfiles
     ```
-
-2. Install `python3-venv` and `python3-pip` if necessary.
-3. `cd` into the repo, create a python venv and activate it.
-4. Run the ./install.sh script.
 
 ## Chezmoi Quick Commands
 
@@ -55,7 +61,7 @@ chezmoi --verbose apply
 **Apply the changes only for specified types like file changes, symlinks, and templates. So basically no scripts are run.**
 
 ```sh
-chezmoi --verbose -i files,symlinks,templates apply 
+chezmoi --verbose -i dirs,files,remove,symlinks,templates apply
 ```
 
 ### Pull changes from a remote repository and apply them

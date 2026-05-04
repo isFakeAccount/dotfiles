@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 from pathlib import Path
-from posixpath import expanduser
 
 from git import GitConfigParser
 from platformdirs import user_config_path, user_data_path
@@ -9,12 +8,13 @@ CHEZMOI_DIR = user_data_path("chezmoi", False)
 
 
 def create_local_git_config(account_name: str, email: str) -> Path:
-    """
-    Creates a local .gitconfig file for a given account in a generated directory based on the account name.
+    """Creates a local .gitconfig file for a given account in a generated directory based on the account name.
 
     :param account_name: The name for this Git account.
     :param email: The email for this Git account.
-    :return: The path to the created .gitconfig file.
+
+    :returns: The path to the created .gitconfig file.
+
     """
 
     git_configs_dir = CHEZMOI_DIR / "git_configs" / account_name.replace(" ", "_")
@@ -29,12 +29,10 @@ def create_local_git_config(account_name: str, email: str) -> Path:
 
 
 def create_symlinks_for_all_gitconfigs() -> list[Path]:
-    """
-    Loops through all directories in git_configs and prompts the user to provide
-    a file path for creating a symlink to each .gitconfig. Returns a list of paths
-    where the symlinks have been created.
+    """Loops through all directories in git_configs and prompts the user to provide a file path for creating a symlink to each .gitconfig. Returns a list of paths where the symlinks have been created.
 
-    :return: List of paths to the directories where the symlinks have been created.
+    :returns: List of paths to the directories where the symlinks have been created.
+
     """
     git_configs_base_dir = CHEZMOI_DIR / "git_configs"
     symlink_paths: set[Path] = set()
@@ -44,11 +42,9 @@ def create_symlinks_for_all_gitconfigs() -> list[Path]:
             continue
 
         target_gitconfig_path = account_dir / ".gitconfig"
-        symlink_path = Path(
-            input(
-                f"Enter the file path where you want to create the symlink for {account_dir.name}_gitconfig: "
-            ).strip()
-        ).expanduser().absolute()
+        symlink_path = (
+            Path(input(f"Enter the file path where you want to create the symlink for {account_dir.name}_gitconfig: ").strip()).expanduser().absolute()
+        )
         symlink_gitconfig_path = symlink_path / ".gitconfig"
         if symlink_gitconfig_path.exists() or symlink_gitconfig_path.is_symlink():
             symlink_gitconfig_path.unlink()
@@ -62,13 +58,13 @@ def create_symlinks_for_all_gitconfigs() -> list[Path]:
 
 
 def create_global_gitconfig(git_account_dirs: list[Path]) -> None:
-    """
-    This function creates a global Git config with includeIf set to correct paths.
+    """This function creates a global Git config with includeIf set to correct paths.
 
-    It assumes that git_account_dirs contains the paths to the directories with .gitconfig files.
-    It adds includeIf entries to the global Git config based on these directories.
+    It assumes that git_account_dirs contains the paths to the directories with .gitconfig files. It adds includeIf
+    entries to the global Git config based on these directories.
 
     :param git_account_dirs: List of paths to directories containing .gitconfig files.
+
     """
     git_global_config_dir = user_config_path("git", False)
     git_global_config_dir.mkdir(parents=True, exist_ok=True)
@@ -108,11 +104,7 @@ def create_global_gitconfig(git_account_dirs: list[Path]) -> None:
 
 
 def main() -> None:
-    num_accounts = int(
-        input(
-            "How many Git accounts do you want to set up? (enter 0 to skip this step): "
-        )
-    )
+    num_accounts = int(input("How many Git accounts do you want to set up? (enter 0 to skip this step): "))
 
     if num_accounts == 0:
         print("Skipping Git Account setup.")

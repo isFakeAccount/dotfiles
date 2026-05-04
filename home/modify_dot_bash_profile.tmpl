@@ -1,5 +1,5 @@
 # chezmoi:modify-template
-{{- if eq .chezmoi.osRelease.id "arch" }}
+{{- if (or (eq .chezmoi.osRelease.id "arch") (eq .chezmoi.osRelease.idLike "arch")) }}
 # ~/.bash_profile for Arch Linux
 
 # if running bash

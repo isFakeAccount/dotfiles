@@ -1,0 +1,163 @@
+# Config to install system applications
+# Read by home/.chezmoiscripts/run_after_ansible_playbooks.py
+---
+gaming:
+  steam:
+    default:
+      become: true
+      executable_name: "steam"
+      method: "system_package"
+      system_package: "steam"
+programming:
+  git:
+    default:
+      become: true
+      executable_name: "git"
+      method: "system_package"
+      system_package: "git"
+  neovim:
+    default:
+      become: true
+      executable_name: "nvim"
+      method: "system_package"
+      system_package: "neovim"
+  tmux:
+    default:
+      become: true
+      executable_name: "tmux"
+      method: "system_package"
+      system_package: "tmux"
+  vscode:
+    default:
+      become: true
+      executable_name: "code"
+      method: "system_package"
+      system_package: "code"
+programming_languages:
+  nvm:
+    debian:
+      become: false
+      executable_name: "node"
+      method: "script"
+      script:
+        environment:
+          NVM_DIR: "{{ nvm_dir }}"
+          XDG_DATA_HOME: "{{ xdg_data_home }}"
+          PROFILE: "/dev/null"
+        url: "https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh"
+        vars:
+          nvm_dir: "{{ xdg_data_home }}/nvm"
+          xdg_data_home: "{{ lookup('env', 'XDG_DATA_HOME') | default(ansible_env.HOME ~ '/.local/share', true) }}"
+    default:
+      become: true
+      executable_name: "node"
+      method: "system_package"
+      system_package: "nvm"
+  rustup:
+    debian:
+      become: false
+      executable_name: "rustup"
+      method: "script"
+      script:
+        interpreter: "bash"
+        url: "https://sh.rustup.rs"
+        args:
+          - "-y"
+          - "--no-modify-path"
+    default:
+      become: true
+      executable_name: "rustup"
+      method: "system_package"
+      system_package: "rustup"
+  uv:
+    debian:
+      become: false
+      executable_name: "uv"
+      method: "script"
+      script:
+        environment:
+          INSTALLER_NO_MODIFY_PATH: "1"
+        interpreter: "bash"
+        url: "https://astral.sh/uv/install.sh"
+    default:
+      become: true
+      executable_name: "uv"
+      method: "system_package"
+      system_package: "uv"
+sync_storage:
+  rclone:
+    debian:
+      become: false
+      executable_name: "rclone"
+      method: "script"
+      script:
+        interpreter: "bash"
+        url: "https://rclone.org/install.sh"
+    default:
+      become: true
+      executable_name: "rclone"
+      method: "system_package"
+      system_package: "rclone"
+  syncthing:
+    default:
+      become: true
+      executable_name: "syncthing"
+      method: "system_package"
+      system_package: "syncthing"
+utilities:
+  bat:
+    default:
+      become: true
+      executable_name: "bat"
+      method: "system_package"
+      system_package: "bat"
+  cooler-control:
+    default:
+      become: true
+      executable_name: "coolercontrol"
+      method: "system_package"
+      system_package: "coolercontrol"
+    arch:
+      executable_name: "coolercontrol"
+      method: "paru"
+      paru: "coolercontrol-bin"
+    debian:
+      become: true
+      executable_name: "coolercontrol"
+      method: "script"
+      script:
+        interpreter: "bash"
+        post_install_packages:
+          - "coolercontrol"
+          - "liquidctl"
+        url: "https://dl.cloudsmith.io/public/coolercontrol/coolercontrol/setup.deb.sh"
+  curl:
+    default:
+      become: true
+      executable_name: "curl"
+      method: "system_package"
+      system_package: "curl"
+  exfatprogs:
+    default:
+      become: true
+      executable_name: "mkfs.exfat"
+      method: "system_package"
+      system_package: "exfatprogs"
+  ratbagd:
+    default:
+      become: true
+      executable_name: "ratbagd"
+      method: "system_package"
+      system_package: "ratbagd"
+  ripgrep:
+    default:
+      become: true
+      executable_name: "rg"
+      method: "system_package"
+      system_package: "ripgrep"
+  xdg-user-dirs:
+    default:
+      become: true
+      executable_name: "xdg-user-dirs-update"
+      method: "system_package"
+      system_package: "xdg-user-dirs"
