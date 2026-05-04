@@ -25,7 +25,10 @@ chezmoi-apply-all:
 
 # Apply the changes only for specified types like file changes, symlinks, and templates. So basically no scripts are run.
 chezmoi-apply-files:
-    chezmoi --verbose -i dirs,files,remove,symlinks,templates apply 
+    chezmoi --verbose -i dirs,files,remove,symlinks,templates apply
+
+chezmoi-apply-scripts:
+    chezmoi --verbose -i always,scripts,templates apply
 
 # Pull changes from a remote repository and apply them
 chezmoi-update:

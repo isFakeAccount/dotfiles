@@ -3,8 +3,12 @@ command = "nvim"
 args = ["-d", "{{ .Destination }}", "{{ .Target }}"]
 
 [merge]
-command = "bash"
+command = "nvim"
 args = [
+    "-d",
+    "{{ .Target }}",
+    "{{ .Source }}",
+    "{{ .Destination }}",
     "-c",
-    "cp {{ .Target }} {{ .Target }}.base && code --new-window --wait --merge {{ .Destination }} {{ .Target }} {{ .Target }}.base {{ .Source }}",
+    "wincmd J | set diffopt+=vertical"
 ]
