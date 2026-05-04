@@ -105,6 +105,12 @@ sync_storage:
       method: "system_package"
       system_package: "syncthing"
 utilities:
+  bat:
+    default:
+      become: true
+      executable_name: "bat"
+      method: "system_package"
+      system_package: "bat"
   cooler-control:
     default:
       become: true

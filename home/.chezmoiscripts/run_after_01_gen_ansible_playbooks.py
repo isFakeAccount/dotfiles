@@ -90,6 +90,9 @@ class LinuxPackage:
     @classmethod
     def to_system_package(cls, package_display_name: str, installation_metadata: dict[str, Any]) -> Self:
         method = PackageInstallMethod(installation_metadata["method"])
+        # In case of script install there is no package name so we use the executable name, Otherwise the method_name stores the package name.
+        # method: <method_name>
+        # <method_name>: <package-name>
         package_name = installation_metadata[method] if method != PackageInstallMethod.SCRIPT else installation_metadata["executable_name"]
         return cls(
             display_name=package_display_name,
