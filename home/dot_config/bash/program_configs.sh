@@ -4,7 +4,7 @@
 BAT_EXEC="$(command -v bat || command -v batcat)"
 if [ -n "$BAT_EXEC" ]; then
     export MANROFFOPT="-c"
-    export MANPAGER="sh -c 'col -bx | $BAT_EXEC -l man'"
+    export MANPAGER="sh -c 'col -bx | $BAT_EXEC -l man -p'"
 fi
 
 [ -z "$XDG_DATA_HOME" ] && warn "XDG_DATA_HOME is not set" "$BASH_SOURCE" "$LINENO"
